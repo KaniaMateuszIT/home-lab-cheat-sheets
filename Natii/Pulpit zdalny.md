@@ -2,6 +2,12 @@
 
 ## Uruchamianie aplikacji jako inny użytkownik (konto Microsoft)
 
-```cmd
+```powershell
 runas /u:MicrosoftAccount\username@example.com winver
 <!-- Później tym samym hasłem będzie logowanie do Zdalnego Pulpitu (RDP) -->
+```
+
+```powershell
+runas /u:MicrosoftAccount\username@example.com winver
+<!-- Później tym samym hasłem będzie logowanie do Zdalnego Pulpitu (RDP) -->
+```
