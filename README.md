@@ -1,4 +1,4 @@
-# 🧪 Home Lab – Kania
+# 🧪 Home Lab Cheat Sheets
 
 Hi! I'm Kania – a young IT enthusiast experimenting with servers, networking, and automation in my personal home lab. This repository is my digital lab notebook where I store configs, scripts, notes, and cheat sheets that help me build and maintain my own infrastructure.
 
