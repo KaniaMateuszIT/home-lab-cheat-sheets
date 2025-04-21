@@ -6,10 +6,10 @@ Hi! I'm Kania – a young IT enthusiast experimenting with servers, networking, 
 
 ## 🛠️ What You'll Find Here
 
-- Linux system configurations (mostly Debian/Fedora)
-- Bash, PowerShell, and YAML scripts (Docker, Ansible, etc.)
+- Linux system configurations (mostly Debian)
+- Bash, PowerShell, and YAML scripts (Docker, Kubernetes, Ansible, etc.)
 - Proxmox: clustering, HA, VLANs, notes
-- Networking setups with Tailscale, AdGuard, UniFi, Pi-hole
+- Networking setups with Tailscale, AdGuard, UniFi
 - Learning notes and experiment logs
 - External references and helpful links
 
@@ -24,7 +24,7 @@ Most of the content here is written by me, but some parts are inspired by or cop
 ### Notable sources:
 
 - Snippets from [Christian Lempa's Cheat Sheets](https://github.com/ChristianLempa/cheat-sheets) – MIT License
-- Commands from [WunderTech](https://www.wundertech.net/how-to-create-a-2-node-cluster-in-proxmox/) – used with attribution
+- Commands from [WunderTech](https://www.wundertech.net/) – used with attribution
 
 All original content in this repo is available under the **MIT License** – see the `LICENSE` file for details.
 
