@@ -11,16 +11,16 @@ Poniżej przedstawiono przykład konfiguracji `trusted_domains`:
 ```php
 'trusted_domains' => [
     'localhost',
-    'nextcloud.mateuszkania.ovh',
-    'next.mateuszkania.ovh',
+    'nextcloud.example.com',
+    'example.com',
     '192.168.1.200:8080',
 ],
 ```
 
 ### Wyjaśnienie powyższej konfiguracji:
 - `localhost` – umożliwia dostęp lokalny (z tego samego serwera, na którym działa Nextcloud).
-- `nextcloud.mateuszkania.ovh` – adres domeny publicznej dla instalacji Nextcloud.
-- `next.mateuszkania.ovh` – alternatywny adres domeny publicznej dla Nextcloud.
+- `nextcloud.example.com` – adres domeny publicznej dla instalacji Nextcloud.
+- `example.com` – alternatywny adres domeny publicznej dla Nextcloud.
 - `192.168.1.200:8080` – lokalny adres IP z portem, dostępny w sieci wewnętrznej.
 
 ## Gdzie dodać konfigurację?
@@ -36,4 +36,3 @@ Poniżej przedstawiono przykład konfiguracji `trusted_domains`:
 
 ## Uwagi
 - Pamiętaj, aby lista `trusted_domains` była zgodna z domenami i adresami IP, z których faktycznie korzystasz, aby uniknąć problemów z dostępem.
-- Jeśli dodasz nową domenę lub adres IP, zrestartuj serwer WWW (np. Apache lub Nginx), aby zmiany zostały zastosowane.
