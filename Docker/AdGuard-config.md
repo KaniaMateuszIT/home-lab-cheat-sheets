@@ -33,17 +33,19 @@ AdGuard Home to potężny serwer DNS, który blokuje reklamy i trackery w całej
    docker compose up -d
    ```
 
-## Serwery DNS-over-HTTPS (DoH)
+# Lista serwerów DNS-over-HTTPS (DoH)
 
-Poniżej znajduje się lista rekomendowanych serwerów DNS-over-HTTPS (DoH), które można skonfigurować w AdGuard Home w celu zwiększenia prywatności:
+Poniżej znajduje się lista serwerów DNS-over-HTTPS (DoH) w formacie łatwym do skopiowania:
 
-- [Cloudflare DNS](https://cloudflare-dns.com/dns-query)
-- [Quad9 DNS](https://dns.quad9.net/dns-query)
-- [Quad9 DNS (alternatywny)](https://dns10.quad9.net/dns-query)
-- [AdGuard DNS](https://dns.adguard-dns.com/dns-query)
-- [OpenDNS](https://doh.opendns.com/dns-query)
-- [Google DNS](https://dns.google/dns-query)
-- [Mullvad DNS](https://doh.mullvad.net/dns-query)
+```
+https://cloudflare-dns.com/dns-query
+https://dns.quad9.net/dns-query
+https://dns10.quad9.net/dns-query
+https://dns.adguard-dns.com/dns-query
+https://doh.opendns.com/dns-query
+https://dns.google/dns-query
+https://doh.mullvad.net/dns-query
+```
 
 ## Rekomendowane funkcje do włączenia
 
