@@ -53,7 +53,7 @@ Proxmox QDevice to narzędzie umożliwiające zwiększenie dostępności klastra
 
    Na głównym węźle klastra dodaj QDevice:
    ```bash
-   pvecm qdevice add 192.168.1.100
+   pvecm qdevice setup 192.168.1.100
    ```
 
    - `192.168.1.100`: Adres IP serwera QDevice.
