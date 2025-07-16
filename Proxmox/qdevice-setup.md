@@ -18,7 +18,15 @@ Proxmox QDevice to narzędzie umożliwiające zwiększenie dostępności klastra
    pvecm add <IP-węzła-klastra>
    ```
 
-2. **Zainstaluj Proxmox QDevice:**
+2. **Zainstaluj pakiet corosync-qdevice na wszystkich serwerach Proxmox:**
+
+   Jeśli jeszcze nie masz klastra, utwórz go na jednym z węzłów:
+   ```bash
+   apt update
+   apt install corosync-qdevice
+   ```
+
+3. **Zainstaluj Proxmox QDevice:**
 
    Na obu węzłach zainstaluj pakiet `corosync-qdevice`:
    ```bash
@@ -26,7 +34,7 @@ Proxmox QDevice to narzędzie umożliwiające zwiększenie dostępności klastra
    apt install corosync-qdevice
    ```
 
-3. **Zainstaluj `corosync-qnetd` na serwerze QDevice:**
+4. **Zainstaluj `corosync-qnetd` na serwerze QDevice:**
 
    Na serwerze zdalnym zainstaluj pakiet `corosync-qnetd`, który obsługuje QDevice:
    ```bash
@@ -40,7 +48,7 @@ Proxmox QDevice to narzędzie umożliwiające zwiększenie dostępności klastra
    systemctl enable corosync-qnetd
    ```
 
-4. **Dodaj QDevice do klastra:**
+5. **Dodaj QDevice do klastra:**
 
    Na głównym węźle klastra dodaj QDevice:
    ```bash
@@ -49,7 +57,7 @@ Proxmox QDevice to narzędzie umożliwiające zwiększenie dostępności klastra
 
    - `192.168.1.100`: Adres IP serwera QDevice.
 
-5. **Weryfikacja konfiguracji:**
+6. **Weryfikacja konfiguracji:**
 
    Sprawdź stan klastra, aby upewnić się, że QDevice działa poprawnie:
    ```bash
