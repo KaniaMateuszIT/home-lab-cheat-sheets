@@ -1,40 +1,104 @@
-# Tailscale: Konfiguracja jako Exit Node
+# Tailscale – konfiguracja jako Exit Node i Subnet Router (Proxmox VE 9)
 
-Poniżej przedstawiono kroki konfiguracji Tailscale jako węzła zapewniającego dostęp do sieci lokalnej oraz działającego jako Exit Node.
+Poniżej przedstawiono konfigurację Tailscale na **Proxmox VE 9 (Debian 13 Trixie)**, umożliwiającą:
+
+- działanie jako **Exit Node**,
+- udostępnianie sieci lokalnych (**Subnet Router**).
 
 ---
 
-## Kroki konfiguracji:
+## 1. Instalacja Tailscale
 
-1. **Włącz przekazywanie pakietów IPv4 i IPv6:**
+Zainstaluj najnowszą wersję Tailscale:
 
-   Dodaj poniższe linie do pliku `/etc/sysctl.conf`:
-   ```bash
-   echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
-   echo "net.ipv6.conf.all.forwarding=1" >> /etc/sysctl.conf
-   ```
+```bash
+curl -fsSL https://tailscale.com/install.sh | sh
+```
 
-   Załaduj zmiany w konfiguracji systemowej:
-   ```bash
-   sysctl -p
-   ```
+---
 
-2. **Uruchom Tailscale z odpowiednimi opcjami:**
+## 2. Włącz przekazywanie pakietów (IP Forwarding)
 
-   Użyj poniższego polecenia, aby skonfigurować węzeł jako Exit Node oraz reklamować trasy do sieci lokalnej:
-   ```bash
-   tailscale up --advertise-exit-node --advertise-routes=192.168.1.0/24
-   ```
+Utwórz dedykowany plik konfiguracyjny:
 
-   - `--advertise-exit-node`: Umożliwia użycie tego węzła jako Exit Node.
-   - `--advertise-routes=192.168.1.0/24`: Reklamuje trasę do sieci lokalnej (np. `192.168.1.0/24`).
+```bash
+cat >/etc/sysctl.d/99-tailscale.conf <<EOF
+net.ipv4.ip_forward = 1
+net.ipv6.conf.all.forwarding = 1
+EOF
+```
+
+Załaduj nową konfigurację:
+
+```bash
+sysctl --system
+```
+
+Zweryfikuj ustawienia:
+
+```bash
+sysctl net.ipv4.ip_forward
+sysctl net.ipv6.conf.all.forwarding
+```
+
+Oba polecenia powinny zwrócić:
+
+```text
+net.ipv4.ip_forward = 1
+net.ipv6.conf.all.forwarding = 1
+```
+
+---
+
+## 3. Zaloguj urządzenie do Tailscale
+
+```bash
+tailscale up
+```
+
+Po wykonaniu polecenia otworzy się link do logowania w przeglądarce.
+
+---
+
+## 4. Włącz Exit Node oraz Subnet Router
+
+Uruchom:
+
+```bash
+tailscale up \
+  --advertise-exit-node \
+  --advertise-routes=192.168.1.0/24,192.168.10.0/24,192.168.50.0/24
+```
+
+> Dostosuj adresy sieci do swojej konfiguracji.
+
+### Parametry
+
+- `--advertise-exit-node` – udostępnia serwer jako Exit Node.
+- `--advertise-routes` – udostępnia wskazane sieci lokalne innym urządzeniom w Tailscale.
+
+---
+
+## 5. Zatwierdź w panelu administracyjnym
+
+Po wykonaniu powyższego polecenia zaloguj się do panelu administracyjnego Tailscale i zaakceptuj:
+
+- ✅ Exit Node
+- ✅ Advertised Routes
+
+Do momentu ich zatwierdzenia funkcje nie będą dostępne dla innych urządzeń.
 
 ---
 
 ## Efekt
 
-Po wykonaniu powyższych kroków:
-- Węzeł Tailscale będzie pełnił funkcję Exit Node.
-- Będzie również udostępniał dostęp do sieci lokalnej o adresacji `192.168.1.0/24` innym urządzeniom w sieci Tailscale.
+Po wykonaniu wszystkich kroków serwer będzie:
 
-**Uwaga:** Upewnij się, że Twój serwer ma odpowiednie reguły zapory sieciowej oraz że Tailscale jest poprawnie skonfigurowany w panelu administracyjnym.
+- działał jako **Exit Node**,
+- udostępniał sieci:
+  - `192.168.1.0/24`
+  - `192.168.10.0/24`
+  - `192.168.50.0/24`
+- przekazywał ruch IPv4 oraz IPv6.
+
+Konfiguracja jest zgodna z Proxmox VE 9 (Debian 13 Trixie) i aktualnymi zaleceniami Tailscale.
