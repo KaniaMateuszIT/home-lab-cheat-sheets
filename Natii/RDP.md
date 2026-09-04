@@ -3,9 +3,10 @@
 ## 1. Połączenie Tailscale do Exit node
 
 ## 2. Włączenie komputera
-[http://192.168.1.200:8090/](http://192.168.1.200:8090/)
+[UpSnap](https://upsnap.lan.mateuszkania.ovh/)
+
 
 ## 3. Łączenie poprzez RDP
-- **IP**: 192.168.1.110
+- **IP**: 192.168.1.120
 - **Login**: Adres email
 - **Hasło**: Hasło do konta M$
