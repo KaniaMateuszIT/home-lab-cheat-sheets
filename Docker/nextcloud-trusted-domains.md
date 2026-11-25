@@ -1,12 +1,17 @@
-# Nextcloud Trusted Domains Configuration
+# ☁️ Nextcloud – `trusted_domains`
 
-## Opis
+> **Do czego:** pozbycie się komunikatu *„Access through untrusted domain”* – lista domen i adresów, pod którymi Nextcloud odpowiada.
 
-`trusted_domains` to część konfiguracji Nextcloud, która pozwala określić listę domen i adresów IP, z których można bezpiecznie uzyskać dostęp do instalacji Nextcloud. Dzięki tej konfiguracji serwer Nextcloud akceptuje tylko żądania pochodzące z określonych domen lub adresów IP, co zwiększa bezpieczeństwo.
+## TL;DR
 
-## Przykładowa konfiguracja
+```bash
+# Nextcloud w Dockerze (oficjalny obraz) – dodanie domeny pod indeksem 2
+docker exec -u www-data nextcloud php occ config:system:set trusted_domains 2 --value=nextcloud.example.com
+```
 
-Poniżej przedstawiono przykład konfiguracji `trusted_domains`:
+---
+
+## 1. Przykładowa konfiguracja
 
 ```php
 'trusted_domains' => [
@@ -17,22 +22,42 @@ Poniżej przedstawiono przykład konfiguracji `trusted_domains`:
 ],
 ```
 
-### Wyjaśnienie powyższej konfiguracji:
-- `localhost` – umożliwia dostęp lokalny (z tego samego serwera, na którym działa Nextcloud).
-- `nextcloud.example.com` – adres domeny publicznej dla instalacji Nextcloud.
-- `example.com` – alternatywny adres domeny publicznej dla Nextcloud.
-- `192.168.1.200:8080` – lokalny adres IP z portem, dostępny w sieci wewnętrznej.
+| Wpis | Znaczenie |
+|---|---|
+| `localhost` | dostęp z tego samego serwera |
+| `nextcloud.example.com` | domena publiczna |
+| `example.com` | alternatywna domena |
+| `192.168.1.200:8080` | adres IP z portem w sieci lokalnej |
 
-## Gdzie dodać konfigurację?
+## 2. Gdzie to wpisać
 
-1. Otwórz plik `config.php`, znajdujący się w katalogu konfiguracyjnym Nextcloud, zazwyczaj w lokalizacji:
-   ```
-   /var/www/nextcloud/config/config.php
-   ```
+**Sposób 1 – polecenie `occ` (bez edycji pliku):**
 
-2. Znajdź sekcję z `trusted_domains` lub dodaj ją, jeśli jeszcze nie istnieje.
+```bash
+# podgląd aktualnej listy
+docker exec -u www-data nextcloud php occ config:system:get trusted_domains
+# dodanie / nadpisanie wpisu o danym indeksie
+docker exec -u www-data nextcloud php occ config:system:set trusted_domains 3 --value=192.168.1.200:8080
+```
 
-3. Wprowadź powyższą konfigurację, dostosowując nazwy domen i adresy IP do swoich potrzeb.
+Bez Dockera: `sudo -u www-data php /var/www/nextcloud/occ ...`
+
+**Sposób 2 – ręcznie w `config.php`:**
+
+| Instalacja | Plik |
+|---|---|
+| Docker (oficjalny obraz) | `/var/www/html/config/config.php` w kontenerze (zwykle w wolumenie) |
+| Klasyczna | `/var/www/nextcloud/config/config.php` |
+
+Znajdź tablicę `trusted_domains` (albo dodaj ją) i dopisz swoje domeny.
+
+---
 
 ## Uwagi
-- Pamiętaj, aby lista `trusted_domains` była zgodna z domenami i adresami IP, z których faktycznie korzystasz, aby uniknąć problemów z dostępem.
+
+- Wpisuj **dokładnie** to, co jest w pasku adresu przeglądarki (z portem, jeśli inny niż 80/443).
+- Za reverse proxy ustaw też `overwriteprotocol` i `trusted_proxies`, inaczej pojawią się błędy przekierowań.
+
+---
+
+[← Spis treści](../README.md)

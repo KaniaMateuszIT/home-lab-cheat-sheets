@@ -1,54 +1,47 @@
-# Usuwanie osieroconych zadań replikacji w Proxmox
+# 🔁 Proxmox – osierocone zadania replikacji
 
-Czasami po usunięciu węzła z klastra zadania replikacji pozostają w konfiguracji i nie da się ich usunąć z poziomu GUI. W logach pojawia się błąd podobny do:
+> **Do czego:** po usunięciu węzła zostały zadania replikacji, których nie da się usunąć z GUI, a w logach pojawia się:
 
-```
+```text
 hostname lookup 'pve1' failed - failed to get address info for: pve1: Name or service not known
 ```
 
+## TL;DR
+
+```bash
+pvesr list
+pvesr delete 104-0 --force      # gdy zwykłe delete nie pomaga
+# ostateczność: usuń blok zadania z /etc/pve/replication.cfg
+```
+
+---
+
 ## Kroki
 
-1. **Spróbuj usunąć zadanie z poziomu GUI**
+1. **Spróbuj z GUI:** `VM/CT → Replication` → zaznacz zadanie → **Remove**.
 
-   Przejdź do:
-
-   ```
-   CT/VM → Replication
-   ```
-
-   Zaznacz zadanie i kliknij **Remove**.
-
-2. **Jeżeli zadanie nie znika, spróbuj usunąć je z CLI**
-
-   Wyświetl listę zadań:
+2. **Nie znika? Z wiersza poleceń:**
 
    ```bash
-   pvesr list
+   pvesr list                 # lista zadań i ich ID
+   pvesr delete <JobID>       # np. pvesr delete 104-0
    ```
 
-   Usuń wybrane zadanie:
+   Zwykłe `delete` próbuje posprzątać repliki na węźle docelowym – a ten już nie istnieje. Wtedy pomoże:
 
    ```bash
-   pvesr delete <JobID>
+   pvesr delete 104-0 --force
    ```
 
-   Przykład:
-
-   ```bash
-   pvesr delete 104-0
-   ```
-
-3. **Jeżeli zadanie nadal pozostaje, usuń je ręcznie z konfiguracji**
-
-   Otwórz plik:
+3. **Nadal jest? Ręcznie z konfiguracji:**
 
    ```bash
    nano /etc/pve/replication.cfg
    ```
 
-   Usuń cały blok odpowiadający zadaniu, np.:
+   Usuń cały blok zadania, np.:
 
-   ```
+   ```text
    local: 104-0
            target pve1
            remove_job full
@@ -56,14 +49,14 @@ hostname lookup 'pve1' failed - failed to get address info for: pve1: Name or se
            source vesemir
    ```
 
-4. **Przeładuj usługi Proxmox**
+4. **Przeładuj usługi:**
 
    ```bash
-   systemctl reload pvescheduler
+   systemctl restart pvescheduler
    systemctl reload pvedaemon
    ```
 
-5. **Sprawdź, czy zadanie zostało usunięte**
+5. **Sprawdź:**
 
    ```bash
    pvesr list
@@ -71,4 +64,14 @@ hostname lookup 'pve1' failed - failed to get address info for: pve1: Name or se
 
 ## Efekt
 
-Po wykonaniu powyższych kroków osierocone zadania replikacji zostaną usunięte z konfiguracji i nie będą już generować błędów w harmonogramie.
+Osierocone zadania znikają z konfiguracji i nie generują błędów w harmonogramie.
+
+---
+
+## Uwagi
+
+- Powiązane: [removing-node-from-cluster.md](removing-node-from-cluster.md), [removing-orphaned-ha-state.md](removing-orphaned-ha-state.md).
+
+---
+
+[← Spis treści](../README.md)
